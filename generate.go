@@ -44,7 +44,7 @@ func main() {
 	fmt.Println("Data Variable:", *Var)
 
 	if flag.NArg() > 0 {
-		fmt.Println("Zusätzliche Argumente:", flag.Args())
+		fmt.Println("More Arguments:", flag.Args())
 	}
 
 	paths := CheckConfig()
@@ -78,7 +78,7 @@ func Generate(inputPaths []string) {
 	for _, path := range inputPaths {
 		info, err := os.Stat(path)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Fehler beim Prüfen von %s: %v\n", path, err)
+			fmt.Fprintf(os.Stderr, "Error while checking %s: %v\n", path, err)
 			continue
 		}
 
@@ -92,7 +92,7 @@ func Generate(inputPaths []string) {
 					if err == nil {
 						results = append(results, ef)
 					} else {
-						fmt.Fprintf(os.Stderr, "Fehler beim Lesen von %s: %v\n", p, err)
+						fmt.Fprintf(os.Stderr, "Error while reading %s: %v\n", p, err)
 					}
 				}
 				return nil
@@ -102,14 +102,15 @@ func Generate(inputPaths []string) {
 			if err == nil {
 				results = append(results, ef)
 			} else {
-				fmt.Fprintf(os.Stderr, "Fehler beim Lesen von %s: %v\n", path, err)
+				fmt.Fprintf(os.Stderr, "Error while reading %s: %v\n", path, err)
 			}
 		}
 	}
 
-	jsonData, err := json.MarshalIndent(results, "", "  ")
+	jsonData, err := json.Marshal(results)
+	// Compress JSON without Indextation
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Fehler beim JSON-Encoding: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error while JSON-Encoding: %v\n", err)
 		return
 	}
 

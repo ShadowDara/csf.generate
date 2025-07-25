@@ -13,14 +13,14 @@ func creategofile() {
 
 	jsonData, err := os.ReadFile(inputFile)
 	if err != nil {
-		panic(fmt.Errorf("Fehler beim Lesen der JSON-Datei: %w", err))
+		panic(fmt.Errorf("error while reading the JSON file: %w", err))
 	}
 
 	var buf bytes.Buffer
 	gz := gzip.NewWriter(&buf)
 	_, err = gz.Write(jsonData)
 	if err != nil {
-		panic(fmt.Errorf("Fehler beim Komprimieren: %w", err))
+		panic(fmt.Errorf("error while compressing: %w", err))
 	}
 	gz.Close()
 
@@ -28,12 +28,12 @@ func creategofile() {
 
 	f, err := os.Create(*Output)
 	if err != nil {
-		panic(fmt.Errorf("Fehler beim Erstellen von %s: %w", *Output, err))
+		panic(fmt.Errorf("error while creating %s: %w", *Output, err))
 	}
 	defer f.Close()
 
 	fmt.Fprintf(f, "package %s\n\n", *Pkg)
-	fmt.Fprintf(f, "// %s enthält gzip-komprimierte JSON-Daten aus %q\n", *Var, filepath.Base(inputFile))
+	fmt.Fprintf(f, "// Generated with checkstaticfiles\n// https://github.com/ShadowDara/checkstaticfiles\n// %s contains gzip data from %q\n", *Var, filepath.Base(inputFile))
 	fmt.Fprintf(f, "var %s = []byte{\n", *Var)
 
 	for i, b := range compressed {
@@ -50,5 +50,5 @@ func creategofile() {
 	}
 	fmt.Fprintln(f, "}")
 
-	fmt.Printf("✔ Go-Datei %s mit Variable %s wurde erstellt (%d bytes, gzip)\n", *Output, *Var, len(compressed))
+	fmt.Printf("✔ Go file %s with var %s created (%d bytes, gzip)\n", *Output, *Var, len(compressed))
 }
