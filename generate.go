@@ -31,17 +31,18 @@ var (
 
 func init() {
 	// Flags definieren (Pointer speichern)
-	Pkg = flag.String("package", "main", "Name des Go-Packages")
-	Output = flag.String("output", "checkstaticfiles.data.go", "Zieldatei für die generierte Go-Datei")
-	Var = flag.String("variable", "CheckstaticfilesOutputJSONGz", "Place where the Dataarray is saved!")
+	Pkg = flag.String("package", "main", "name of the Go-Package")
+	Output = flag.String("output", "checkstaticfiles.data.go", "Destination for the go files")
+	Var = flag.String("variable", "CheckstaticfilesOutputJSONGz", "Place where the Data-array is saved!")
 }
 
 func main() {
 	flag.Parse()
 
-	fmt.Println("Package:", *Pkg)
-	fmt.Println("Output-Datei:", *Output)
-	fmt.Println("Data Variable:", *Var)
+	fmt.Print("Generating:\n\nData selected:")
+	fmt.Println("- Package:", *Pkg)
+	fmt.Println("- Output-File:", *Output)
+	fmt.Println("- Data Variable:", *Var)
 
 	if flag.NArg() > 0 {
 		fmt.Println("More Arguments:", flag.Args())
@@ -56,7 +57,7 @@ func CheckConfig() []string {
 	if err != nil {
 		panic(err)
 	}
-	log.Println("Executing folder:", wd)
+	log.Println("Executing folder:", wd, "\n")
 
 	data, err := os.ReadFile("checkstaticfiles.config.yaml")
 	if err != nil {
