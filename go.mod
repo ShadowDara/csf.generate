@@ -1,4 +1,4 @@
-module github.com/shadowdara/checkstaticfiles/csf.generate
+module github.com/shadowdara/csf.generate
 
 go 1.24.2
 
