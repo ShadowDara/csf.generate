@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
 func creategofile() {
@@ -33,7 +34,11 @@ func creategofile() {
 	defer f.Close()
 
 	fmt.Fprintf(f, "package %s\n\n", *Pkg)
-	fmt.Fprintf(f, "// Generated with checkstaticfiles\n// https://github.com/ShadowDara/checkstaticfiles\n// %s contains gzip data from %q\n", *Var, filepath.Base(inputFile))
+
+	
+
+	fmt.Fprintf(f, "%s", calculate_settings())
+	fmt.Fprintf(f, "\n\n// Generated with checkstaticfiles\n// https://github.com/ShadowDara/checkstaticfiles\n// %s contains gzip data from %q\n", *Var, filepath.Base(inputFile))
 	fmt.Fprintf(f, "var %s = []byte{\n", *Var)
 
 	for i, b := range compressed {
@@ -51,4 +56,14 @@ func creategofile() {
 	fmt.Fprintln(f, "}")
 
 	fmt.Printf("✔ Go file %s with var %s created (%d bytes, gzip)\n", *Output, *Var, len(compressed))
+}
+
+func calculate_settings() string {
+	var settings int
+	// 1 = ContentMode
+	if (p.ContentMode == true) {
+		settings += 1
+	}
+
+	return "var Chechstaticfiles_settings int = " + strconv.Itoa(settings)
 }

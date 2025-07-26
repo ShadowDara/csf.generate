@@ -14,13 +14,16 @@ import (
 )
 
 type Data struct {
-	Paths []string `yaml:"paths"`
+	ContentMode bool     	`yaml:"contentmode"`
+	Paths 		[]string 	`yaml:"paths"`
 }
 
 type EncodedFile struct {
 	Path    string // Relativer Pfad
 	Content string // base64-kodierter Inhalt
 }
+
+var p Data
 
 // Globale Flag-Variablen als Pointer
 var (
@@ -64,7 +67,6 @@ func CheckConfig() []string {
 		panic(err)
 	}
 
-	var p Data
 	err = yaml.Unmarshal(data, &p)
 	if err != nil {
 		panic(err)
