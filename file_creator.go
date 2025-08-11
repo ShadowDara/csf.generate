@@ -53,7 +53,7 @@ func creategofile() {
 			fmt.Fprintln(f)
 		}
 	}
-	fmt.Fprintln(f, "}")
+	fmt.Fprint(f, "}")
 
 	fmt.Printf("✔ Go file %s with var %s created (%d bytes, gzip)\n", *Output, *Var, len(compressed))
 }

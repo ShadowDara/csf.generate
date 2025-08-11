@@ -78,7 +78,10 @@ func CheckConfig() []string {
 func Generate(inputPaths []string) {
 	var results []EncodedFile
 
-	for _, path := range inputPaths {
+	for _, path_old := range inputPaths {
+		// Converting the paths from \\ to /
+		path := filepath.ToSlash(path_old)
+
 		info, err := os.Stat(path)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error while checking %s: %v\n", path, err)
@@ -118,11 +121,6 @@ func Generate(inputPaths []string) {
 	}
 
 	err = os.WriteFile("checkstaticfiles.output.json", jsonData, 0644)
-	if err != nil {
-		panic(err)
-	}
-
-	err = WriteCompressedJSON("checkstaticfiles.output.json.gz", jsonData)
 	if err != nil {
 		panic(err)
 	}
